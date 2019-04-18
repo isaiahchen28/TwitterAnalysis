@@ -14,6 +14,7 @@ def main():
     for status in tweepy.Cursor(api.home_timeline).items(10):
     	# Process a single status
     	print(status.text)
+        print("\n")
 
 
 if __name__ == '__main__':
