@@ -1,5 +1,4 @@
 import config
- 
 from twython import Twython, TwythonError
  
 # Create a Twython object by passing the necessary secret passwords
