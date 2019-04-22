@@ -84,9 +84,9 @@ def main():
     api = tweepy.API(auth)
     # Test functions
     print_tweets(api, 10)
-    json_home_timeline(api, 10)
-    json_followers(api)
-    json_tweets(api)
+    # json_home_timeline(api, 10)
+    # json_followers(api)
+    # json_tweets(api)
 
 
 if __name__ == '__main__':
