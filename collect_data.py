@@ -9,12 +9,12 @@ where QUERY is the query of interest and data is the directory where the json
 file will be saved to.
 """
 import argparse
+import string
 import config
 import tweepy
 from tweepy import Stream
 from tweepy import OAuthHandler
 from tweepy.streaming import StreamListener
-import string
 import time
 import json
 
@@ -23,12 +23,37 @@ def get_parser():
     """
     Get the parser for any arguments in the command line.
     """
-    parser = argparse.ArgumentParser(description="Twitter Downloader")
+    parser = argparse.ArgumentParser(description="Download Tweets")
+    # Add argument for the query
     parser.add_argument("-q", "--query", dest="query",
-                        help="Query/Filter", default='-')
+                        help="The desired keyword", default='-')
+    # Add argument for the directory for the file to be saved
     parser.add_argument("-d", "--data-dir", dest="data_dir",
-                        help="Output/Data Directory")
+                        help="The directory where the data will be saved in a .json file")
     return parser
+
+
+def convert_valid(char):
+    """
+    Converts a character into an appropriate one for use in filenames. If a
+    character is invalid, it will be replaced with a '_' character.
+    """
+    # Define string with all valid characters for filenames
+    valid_chars = "-_.%s%s" % (string.ascii_letters, string.digits)
+    # Check if the character is valid or not and replace the invalid character
+    if char in valid_chars:
+        return char
+    else:
+        return '_'
+
+
+def format_filename(filename):
+    """
+    Converts the filename into a string with suitable characters. It takes in
+    the name of the file to be converted and will return the appropriate
+    string.
+    """
+    return ''.join(convert_valid(char) for char in filename)
 
 
 class MyListener(StreamListener):
@@ -54,34 +79,6 @@ class MyListener(StreamListener):
     def on_error(self, status):
         print(status)
         return True
-
-
-def format_filename(fname):
-    """
-    Converts the filename into a string with suitable characters. It takes in
-    the name of the file to be converted and will return the appropriate
-    string.
-    """
-    return ''.join(convert_valid(one_char) for one_char in fname)
-
-
-def convert_valid(one_char):
-    """
-    Converts a character into an appropriate one for use in filenames. If a
-    character is invalid, it will be replaced with a '_' character.
-    """
-    valid_chars = "-_.%s%s" % (string.ascii_letters, string.digits)
-    if one_char in valid_chars:
-        return one_char
-    else:
-        return '_'
-
-
-@classmethod
-def parse(cls, api, raw):
-    status = cls.first_parse(api, raw)
-    setattr(status, 'json', json.dumps(raw))
-    return status
 
 
 def main():
