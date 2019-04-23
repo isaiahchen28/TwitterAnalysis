@@ -47,4 +47,3 @@ with open("data/stream_trump.json", 'r') as f:
     for line in f:
         tweet = json.loads(line)
         tokens = preprocess(tweet['text'])
-        print(tokens)
