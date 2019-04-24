@@ -3,12 +3,12 @@ This Python script is used to access Twitter and contains some basic functions
 for collecting data. To properly run this script, enter the following command
 in the terminal:
 
-python collect_data.py -q QUERY -d data -t time
+python collect_data.py -q QUERY -d data -t hh:mm:ss
 
 where QUERY is the query of interest, data is the directory where the json
-file will be saved to, and time is the time that the stream will run for (in
-seconds). If the query does not appear in enough tweets after 5 seconds, the
-stream will time out and return an error.
+file will be saved to, and time is the time that the stream will run for. If
+the query does not appear in enough tweets after 5 seconds, the stream will
+time out and return an error.
 """
 import argparse
 import string
@@ -32,8 +32,16 @@ def get_parser():
     parser.add_argument("-d", "--data-dir", dest="data_dir",
                         help="The directory where the data will be saved in a .json file")
     parser.add_argument("-t", "--time-limit", dest="time_limit",
-                        help="The desired amount of time to run the stream.")
+                        help="The desired amount of time to run the stream. Format should be hh:mm:ss")
     return parser
+
+
+def get_sec(time_str):
+    """
+    Converts time string (hh:mm:ss) into seconds.
+    """
+    h, m, s = time_str.split(':')
+    return float(int(h) * 3600 + int(m) * 60 + int(s))
 
 
 def convert_valid(char):
@@ -126,7 +134,7 @@ def main():
     api = tweepy.API(auth)
     # Stream Twitter data using StreamListener object
     twitter_stream = Stream(auth, MyListener(
-        args.data_dir, args.query, float(args.time_limit)), timeout=5)
+        args.data_dir, args.query, get_sec(args.time_limit)), timeout=5)
     twitter_stream.filter(track=[args.query])
 
 
