@@ -1,49 +1,56 @@
 """
-This Python script contains functions that are used to pre-process the data.
+This Python script contains functions that are used to pre-process the data
+stored in .json files.
 """
-import json
 import re
 
 
-emoticons_str = r"""
-    (?:
-        [:=;] # Eyes
-        [oO\-]? # Nose (optional)
-        [D\)\]\(\]/\\OpP] # Mouth
-    )"""
-
-regex_str = [
-    emoticons_str,
-    r'<[^>]+>',  # HTML tags
-    r'(?:@[\w_]+)',  # @-mentions
-    r"(?:\#+[\w_]+[\w\'_\-]*[\w_]+)",  # hash-tags
-    # URLs
-    r'http[s]?://(?:[a-z]|[0-9]|[$-_@.&amp;+]|[!*\(\),]|(?:%[0-9a-f][0-9a-f]))+',
-
-    r'(?:(?:\d+,?)+(?:\.?\d+)?)',  # numbers
-    r"(?:[a-z][a-z'\-_]+[a-z])",  # words with - and '
-    r'(?:[\w_]+)',  # other words
-    r'(?:\S)'  # anything else
-]
-
-tokens_re = re.compile(r'('+'|'.join(regex_str)+')',
-                       re.VERBOSE | re.IGNORECASE)
-emoticon_re = re.compile(r'^'+emoticons_str+'$', re.VERBOSE | re.IGNORECASE)
-
-
 def tokenize(s):
+    """
+    Split a string of text into individual tokens
+
+    **Parameters**
+
+        s: *str*
+            The text to be split into separate strings.
+
+    **Returns**
+
+        
+    """
+    emoticons_str = r"""
+    (?:
+        [:=;]
+        [oO\-]?
+        [D\)\]\(\]/\\OpP]
+    )"""
+    regex_str = [
+        emoticons_str,
+        r"<[^>]+>",
+        r"(?:@[\w_]+)",
+        r"(?:\#+[\w_]+[\w\'_\-]*[\w_]+)",
+        r"http[s]?://(?:[a-z]|[0-9]|[$-_@.&amp;+]|[!*\(\),]|(?:%[0-9a-f][0-9a-f]))+",
+        r"(?:(?:\d+,?)+(?:\.?\d+)?)",
+        r"(?:[a-z][a-z'\-_]+[a-z])",
+        r"(?:[\w_]+)",
+        r"(?:\S)"]
+    tokens_re = re.compile(r'('+'|'.join(regex_str)+')', re.VERBOSE | re.IGNORECASE)
     return tokens_re.findall(s)
 
 
 def preprocess(s, lowercase=False):
+    emoticons_str = r"""
+    (?:
+        [:=;]
+        [oO\-]?
+        [D\)\]\(\]/\\OpP]
+    )"""
+    emoticon_re = re.compile(r'^'+emoticons_str+'$', re.VERBOSE | re.IGNORECASE)
     tokens = tokenize(s)
     if lowercase:
         tokens = [token if emoticon_re.search(
             token) else token.lower() for token in tokens]
     return tokens
 
-
-with open("data/stream_trump.json", 'r') as f:
-    for line in f:
-        tweet = json.loads(line)
-        tokens = preprocess(tweet['text'])
+tweet = 'RT @marcobonzanini: just an example! :D http://example.com #NLP'
+print(preprocess(tweet))

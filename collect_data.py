@@ -96,9 +96,8 @@ class MyListener(StreamListener):
         # Check if the time limit has been reached
         if (time.time() - self.start_time) < self.time_limit:
             try:
+                # Write data to the output file and print it to the terminal
                 with open(self.outfile, 'a') as f:
-                    # Write data to the output file and print it to the
-                    # terminal
                     f.write(data)
                     print(data)
                     return True
