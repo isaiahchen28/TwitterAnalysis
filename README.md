@@ -1,5 +1,5 @@
 # TwitterAnalysis
-Requires Python 3.0 or later.
+Requires Python 3.7
 
 This project uses data mining and machine learning methods to obtain
 meaningful conclusions regarding social media sentiment on Twitter.
