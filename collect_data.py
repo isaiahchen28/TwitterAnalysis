@@ -130,7 +130,6 @@ def main():
     # Authenticate user
     auth = OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token, access_secret)
-    api = tweepy.API(auth)
     # Stream Twitter data using StreamListener object
     twitter_stream = Stream(auth, MyListener(
         args.data_dir, args.query, get_sec(args.time_limit)), timeout=5)
