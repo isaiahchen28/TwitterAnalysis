@@ -72,6 +72,6 @@ def calculate_term_frequencies(filename, term_filter, n):
     return common_terms
 
 if __name__ == '__main__':
-    filename = "data/stream_avengers.json"
-    term_filter = "bigrams"
+    filename = "data/stream_biden.json"
+    term_filter = "remove_stop_words"
     print(calculate_term_frequencies(filename, term_filter, n=10))
