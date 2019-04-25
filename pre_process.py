@@ -1,6 +1,6 @@
 """
-This Python script contains functions that are used to pre-process the data
-stored in .json files.
+This Python script contains functions that are used to pre-process Twitter
+data.
 """
 import re
 
@@ -46,7 +46,7 @@ def preprocess(s, lowercase=False):
         lowercase: *boolean*
             A flag to decide whether the tokens will contain any uppercase
             characters or not. If lowercase is True, then all uppercase
-            characters will be converted to lowercase, except for emoticons. 
+            characters will be converted to lowercase, except for emoticons.
 
     **Returns**
 
