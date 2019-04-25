@@ -8,16 +8,6 @@ import re
 def tokenize(s):
     """
     Split a string of text into individual tokens.
-
-    **Parameters**
-
-        s: *str*
-            The text to be split into separate strings.
-
-    **Returns**
-
-        tokens: *list, str*
-            A list of the individual tokens.
     """
     # Define string of various emoticons to be recognized as tokens
     emoticons_str = r"""
@@ -60,22 +50,24 @@ def preprocess(s, lowercase=False):
 
     **Returns**
 
-        
+        tokens: *list, str*
+            The individual string tokens from the original Tweet.
     """
+    # Define string of various emoticons to be recognized as tokens
     emoticons_str = r"""
     (?:
         [:=;]
         [oO\-]?
         [D\)\]\(\]/\\OpP]
     )"""
+    # Use Verbose and Ignorecase flags to ignore spaces in original strings
+    # and read both lowercase and uppercase characters in the emoticons
     emoticon_re = re.compile(r'^'+emoticons_str+'$',
                              re.VERBOSE | re.IGNORECASE)
+    # Call the tokenize function and convert characters to lowercase if the
+    # flag is True
     tokens = tokenize(s)
     if lowercase:
         tokens = [token if emoticon_re.search(
             token) else token.lower() for token in tokens]
     return tokens
-
-
-tweet = 'RT @marcobonzanini: just an example! :D http://example.com #NLP'
-print(preprocess(tweet))
