@@ -5,45 +5,24 @@ import string
 from nltk import bigrams
 from nltk.corpus import stopwords
 from collections import Counter
+from collections import defaultdict
 import json
 import pre_process
+import operator
 
 
-def calculate_term_frequencies(filename, term_filter, n):
+def generate_term_list(filename, term_filter):
     """
-    Observe which terms appear the most in a given Twitter dataset.
-
-    **Parameters**
-
-        filename: *str*
-            The name/location of the .json file with the Twitter dataset.
-        term_filter: *str*
-            The specified filter to be used for terms. Possible filters
-            include:
-                "default" - considers all terms
-                "remove_stop_words" - does not consider stop-words
-                "single_terms" - only counts terms once
-                "hashtags" - only counts hashtags
-                "terms_only" - only counts terms (no hashtags or mentions)
-                "bigrams" - only counts bigrams
-        n: *int*
-            The number of arguments to be returned.
-
-    **Returns**
-
-        common_terms: *list, tuples*
-            A list of tuples containing the most common terms and the number
-            of times they occur.
+    Generate list of terms
     """
     # Define list of common characters used for punctuation
     punctuation = list(string.punctuation)
     # Define list of stop-words, which are common words that do not carry
     # significance (conjunctions, adverbs, etc.)
     stop = stopwords.words('english') + punctuation + ["rt", "via"]
+    terms = []
     # Open the file
     with open(filename, 'r') as f:
-        # Initialize counter class to access useful methods
-        count_all = Counter()
         # Parse through each line/Tweet in the .json file
         for line in f:
             tweet = json.loads(line)
@@ -51,27 +30,69 @@ def calculate_term_frequencies(filename, term_filter, n):
             ppterms = pre_process.preprocess(tweet['text'])
             # Apply the appropriate filter as specified by the user
             if term_filter == "remove_stop_words":
-                terms = [term for term in ppterms if term not in stop]
+                terms.append([term for term in ppterms if term not in stop])
             elif term_filter == "hashtags":
-                terms = [term for term in ppterms if term.startswith('#')]
+                terms.append(
+                    [term for term in ppterms if term.startswith('#')])
             elif term_filter == "terms_only":
-                terms = [term for term in ppterms if term not in stop and not term.startswith(('#', '@'))]
-            elif term_filter == "bigrams":
-                temp = [term for term in ppterms if term not in stop]
-                terms = bigrams(temp)
+                terms.append(
+                    [term for term in ppterms if term not in stop and not term.startswith(('#', '@'))])
             elif term_filter == "single_terms":
                 temp = [term for term in ppterms]
-                terms = set(temp)
-            elif term_filter == "default":
-                terms = [term for term in ppterms]
+                terms.append(set(temp))
+            elif term_filter == "default" or term_filter is None:
+                terms.append([term for term in ppterms])
             else:
-                raise Exception("Invalid term filter.")
-            # Update the counter
-            count_all.update(terms)
-        common_terms = count_all.most_common(n)
-    return common_terms
+                raise Exception("Invalid filter type.")
+    return terms
+
+
+def calculate_term_frequencies(term_list, n):
+    """
+    Calculate term frequencies
+    """
+    count_all = Counter()
+    for i in term_list:
+        count_all.update(i)
+    return count_all.most_common(n)
+
+
+def term_co_occurrences(term_list, n):
+    """
+    Calculate the number of term co-occurences
+    """
+    com = defaultdict(lambda: defaultdict(int))
+    for tweet in term_list:
+        # Build co-occurrence matrix
+        for i in range(len(tweet) - 1):
+            for j in range(i + 1, len(tweet)):
+                w1, w2 = sorted([tweet[i], tweet[j]])
+                if w1 != w2:
+                    com[w1][w2] += 1
+    com_max = []
+    for t1 in com:
+        t1_max_terms = sorted(
+            com[t1].items(), key=operator.itemgetter(1), reverse=True)[:n]
+        for t2, count in t1_max_terms:
+            com_max.append(((t1, t2), count))
+    terms_max = sorted(com_max, key=operator.itemgetter(1), reverse=True)
+    return terms_max[:n]
+
+def search_word_co_occurrences(keyword, term_list, n):
+    """
+    Calculate term co-occurrences for a given keyword
+    """
+    count_search = Counter()
+    for tweet in term_list:
+        if keyword in tweet:
+            count_search.update(tweet)
+    return count_search.most_common(n)
+
+
 
 if __name__ == '__main__':
     filename = "data/stream_biden.json"
-    term_filter = "remove_stop_words"
-    print(calculate_term_frequencies(filename, term_filter, n=10))
+    term_filter = "terms_only"
+    terms = generate_term_list(filename, term_filter)
+    # common_terms = calculate_term_frequencies(terms, 5)
+    print(search_word_co_occurrences("president", terms, 20))
