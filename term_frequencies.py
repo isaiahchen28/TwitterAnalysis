@@ -39,7 +39,10 @@ def generate_term_list(filename, term_filter):
                     [term for term in ppterms if term not in stop and not term.startswith(('#', '@'))])
             elif term_filter == "single_terms":
                 temp = [term for term in ppterms]
-                terms.append(set(temp))
+                terms.append(list(set(temp)))
+            elif term_filter == "single_stop_words":
+                temp = [term for term in ppterms if term not in stop]
+                terms.append(list(set(temp)))
             elif term_filter == "default" or term_filter is None:
                 terms.append([term for term in ppterms])
             else:
@@ -76,7 +79,7 @@ def term_co_occurrences(term_list, n):
         for t2, count in t1_max_terms:
             com_max.append(((t1, t2), count))
     terms_max = sorted(com_max, key=itemgetter(1), reverse=True)
-    return terms_max[:n]
+    return com
 
 
 def search_word_co_occurrences(keyword, term_list, n):
