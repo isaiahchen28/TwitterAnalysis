@@ -4,11 +4,11 @@ This Python script is used to analyze term frequencies.
 import string
 from nltk import bigrams
 from nltk.corpus import stopwords
-from collections import Counter
-from collections import defaultdict
 import json
 import pre_process
-import operator
+from collections import Counter
+from collections import defaultdict
+from operator import itemgetter
 
 
 def generate_term_list(filename, term_filter):
@@ -72,10 +72,10 @@ def term_co_occurrences(term_list, n):
     com_max = []
     for t1 in com:
         t1_max_terms = sorted(
-            com[t1].items(), key=operator.itemgetter(1), reverse=True)[:n]
+            com[t1].items(), key=itemgetter(1), reverse=True)[:n]
         for t2, count in t1_max_terms:
             com_max.append(((t1, t2), count))
-    terms_max = sorted(com_max, key=operator.itemgetter(1), reverse=True)
+    terms_max = sorted(com_max, key=itemgetter(1), reverse=True)
     return terms_max[:n]
 
 def search_word_co_occurrences(keyword, term_list, n):
@@ -87,12 +87,3 @@ def search_word_co_occurrences(keyword, term_list, n):
         if keyword in tweet:
             count_search.update(tweet)
     return count_search.most_common(n)
-
-
-
-if __name__ == '__main__':
-    filename = "data/stream_biden.json"
-    term_filter = "terms_only"
-    terms = generate_term_list(filename, term_filter)
-    # common_terms = calculate_term_frequencies(terms, 5)
-    print(search_word_co_occurrences("president", terms, 20))
