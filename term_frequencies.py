@@ -78,6 +78,7 @@ def term_co_occurrences(term_list, n):
     terms_max = sorted(com_max, key=itemgetter(1), reverse=True)
     return terms_max[:n]
 
+
 def search_word_co_occurrences(keyword, term_list, n):
     """
     Calculate term co-occurrences for a given keyword
