@@ -59,7 +59,7 @@ def calculate_term_frequencies(term_list, n):
     return count_all.most_common(n)
 
 
-def term_co_occurrences(term_list, n):
+def generate_co_matrix(term_list):
     """
     Calculate the number of term co-occurences
     """
@@ -71,13 +71,13 @@ def term_co_occurrences(term_list, n):
                 w1, w2 = sorted([tweet[i], tweet[j]])
                 if w1 != w2:
                     com[w1][w2] += 1
-    com_max = []
-    for t1 in com:
-        t1_max_terms = sorted(
-            com[t1].items(), key=itemgetter(1), reverse=True)[:n]
-        for t2, count in t1_max_terms:
-            com_max.append(((t1, t2), count))
-    terms_max = sorted(com_max, key=itemgetter(1), reverse=True)
+    # com_max = []
+    # for t1 in com:
+    #     t1_max_terms = sorted(
+    #         com[t1].items(), key=itemgetter(1), reverse=True)[:n]
+    #     for t2, count in t1_max_terms:
+    #         com_max.append(((t1, t2), count))
+    # terms_max = sorted(com_max, key=itemgetter(1), reverse=True)
     return com
 
 
@@ -96,10 +96,8 @@ if __name__ == '__main__':
     filename = "data/stream_biden.json"
     term_filter = "terms_only"
     term_list = generate_term_list(filename, term_filter)
-    term_freq = calculate_term_frequencies(term_list, 5)
-    com = term_co_occurrences(term_list, 20)
-
-    print(term_freq)
+    com = generate_co_matrix(term_list)
+    print(com)
     # # n_docs is the total n. of tweets
     # p_t = {}
     # p_t_com = defaultdict(lambda: defaultdict(int))
