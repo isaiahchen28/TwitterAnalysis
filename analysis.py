@@ -8,6 +8,7 @@ import pre_process
 from collections import Counter
 from collections import defaultdict
 from operator import itemgetter
+import math
 
 
 def generate_term_list(filename, term_filter):
@@ -97,7 +98,7 @@ def search_word_co_occurrences(keyword, term_list, n):
 
 
 if __name__ == '__main__':
-    filename = "data/stream_biden.json"
+    filename = "data/stream_brexit.json"
     term_filter = "terms_only"
     term_list = generate_term_list(filename, term_filter)
     term_count, term_freq = calculate_term_frequencies(term_list, 20)
@@ -113,3 +114,34 @@ if __name__ == '__main__':
         p_t[term] = n / n_docs
         for t2 in com[term]:
             p_t_com[term][t2] = com[term][t2] / n_docs
+
+    positive_vocab = [
+        'good', 'nice', 'great', 'awesome', 'outstanding',
+        'fantastic', 'terrific', ':)', ':-)', 'like', 'love',
+        # shall we also include game-specific terms?
+        # 'triumph', 'triumphal', 'triumphant', 'victory', etc.
+    ]
+    negative_vocab = [
+        'bad', 'terrible', 'crap', 'useless', 'hate', ':(', ':-(',
+        # 'defeat', etc.
+    ]
+    pmi = defaultdict(lambda: defaultdict(int))
+    for t1 in p_t:
+        for t2 in com[t1]:
+            denom = p_t[t1] * p_t[t2]
+            pmi[t1][t2] = math.log2(p_t_com[t1][t2] / denom)
+
+    semantic_orientation = {}
+    for term, n in p_t.items():
+        positive_assoc = sum(pmi[term][tx] for tx in positive_vocab)
+        negative_assoc = sum(pmi[term][tx] for tx in negative_vocab)
+        semantic_orientation[term] = positive_assoc - negative_assoc
+
+    semantic_sorted = sorted(semantic_orientation.items(),
+                             key=itemgetter(1),
+                             reverse=True)
+    top_pos = semantic_sorted[:10]
+    top_neg = semantic_sorted[-10:]
+
+    print(top_pos)
+    print(top_neg)
