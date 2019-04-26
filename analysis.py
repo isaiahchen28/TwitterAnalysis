@@ -56,7 +56,7 @@ def calculate_term_frequencies(term_list, n):
     count_all = Counter()
     for i in term_list:
         count_all.update(i)
-    return count_all.most_common(n)
+    return count_all, count_all.most_common(n)
 
 
 def generate_co_matrix(term_list):
@@ -100,15 +100,16 @@ if __name__ == '__main__':
     filename = "data/stream_biden.json"
     term_filter = "terms_only"
     term_list = generate_term_list(filename, term_filter)
+    term_count, term_freq = calculate_term_frequencies(term_list, 20)
     com = generate_co_matrix(term_list)
-    co_terms = co_occurrent_terms(com, 5)
+    co_terms = co_occurrent_terms(com, 20)
     searched_word = search_word_co_occurrences("creepy", term_list, 20)
-    print(searched_word)
-    # # n_docs is the total n. of tweets
-    # p_t = {}
-    # p_t_com = defaultdict(lambda: defaultdict(int))
 
-    # for term, n in count_stop_single.items():
-    #     p_t[term] = n / n_docs
-    #     for t2 in com[term]:
-    #         p_t_com[term][t2] = com[term][t2] / n_docs
+    # n_docs is the total n. of tweets
+    p_t = {}
+    p_t_com = defaultdict(lambda: defaultdict(int))
+    n_docs = len(term_list)
+    for term, n in term_count.items():
+        p_t[term] = n / n_docs
+        for t2 in com[term]:
+            p_t_com[term][t2] = com[term][t2] / n_docs
