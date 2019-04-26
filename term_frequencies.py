@@ -2,7 +2,6 @@
 This Python script is used to analyze term frequencies.
 """
 import string
-from nltk import bigrams
 from nltk.corpus import stopwords
 import json
 import pre_process
@@ -92,18 +91,20 @@ def search_word_co_occurrences(keyword, term_list, n):
             count_search.update(tweet)
     return count_search.most_common(n)
 
-if __name__ == '__main__':
-    filename = "data/stream_avengers.json"
-    term_filter = "single_stop_words"
-    term_list = generate_term_list(filename, term_filter)
-    count_stop_single = calculate_term_frequencies(term_list, 20)
-    com = term_co_occurrences(term_list, 20)
-    print(com)
-    # n_docs is the total n. of tweets
-    p_t = {}
-    p_t_com = defaultdict(lambda: defaultdict(int))
 
-    for term, n in count_stop_single.items():
-        p_t[term] = n / n_docs
-        for t2 in com[term]:
-            p_t_com[term][t2] = com[term][t2] / n_docs
+if __name__ == '__main__':
+    filename = "data/stream_biden.json"
+    term_filter = "terms_only"
+    term_list = generate_term_list(filename, term_filter)
+    term_freq = calculate_term_frequencies(term_list, 5)
+    com = term_co_occurrences(term_list, 20)
+
+    print(term_freq)
+    # # n_docs is the total n. of tweets
+    # p_t = {}
+    # p_t_com = defaultdict(lambda: defaultdict(int))
+
+    # for term, n in count_stop_single.items():
+    #     p_t[term] = n / n_docs
+    #     for t2 in com[term]:
+    #         p_t_com[term][t2] = com[term][t2] / n_docs

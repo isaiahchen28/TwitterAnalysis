@@ -35,7 +35,7 @@ def tokenize(s):
     return tokens_re.findall(s)
 
 
-def preprocess(s, lowercase=False):
+def preprocess(s, lowercase=True):
     """
     Call the tokenize function above and also handle emoticons properly.
 
