@@ -91,3 +91,19 @@ def search_word_co_occurrences(keyword, term_list, n):
         if keyword in tweet:
             count_search.update(tweet)
     return count_search.most_common(n)
+
+if __name__ == '__main__':
+    filename = "data/stream_avengers.json"
+    term_filter = "single_stop_words"
+    term_list = generate_term_list(filename, term_filter)
+    count_stop_single = calculate_term_frequencies(term_list, 20)
+    com = term_co_occurrences(term_list, 20)
+    print(com)
+    # n_docs is the total n. of tweets
+    p_t = {}
+    p_t_com = defaultdict(lambda: defaultdict(int))
+
+    for term, n in count_stop_single.items():
+        p_t[term] = n / n_docs
+        for t2 in com[term]:
+            p_t_com[term][t2] = com[term][t2] / n_docs
