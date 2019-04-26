@@ -71,14 +71,18 @@ def generate_co_matrix(term_list):
                 w1, w2 = sorted([tweet[i], tweet[j]])
                 if w1 != w2:
                     com[w1][w2] += 1
-    # com_max = []
-    # for t1 in com:
-    #     t1_max_terms = sorted(
-    #         com[t1].items(), key=itemgetter(1), reverse=True)[:n]
-    #     for t2, count in t1_max_terms:
-    #         com_max.append(((t1, t2), count))
-    # terms_max = sorted(com_max, key=itemgetter(1), reverse=True)
     return com
+
+
+def co_occurrent_terms(com, n):
+    com_max = []
+    for t1 in com:
+        t1_max_terms = sorted(
+            com[t1].items(), key=itemgetter(1), reverse=True)[:n]
+        for t2, count in t1_max_terms:
+            com_max.append(((t1, t2), count))
+    terms_max = sorted(com_max, key=itemgetter(1), reverse=True)
+    return terms_max[:n]
 
 
 def search_word_co_occurrences(keyword, term_list, n):
@@ -97,7 +101,9 @@ if __name__ == '__main__':
     term_filter = "terms_only"
     term_list = generate_term_list(filename, term_filter)
     com = generate_co_matrix(term_list)
-    print(com)
+    co_terms = co_occurrent_terms(com, 5)
+    searched_word = search_word_co_occurrences("creepy", term_list, 20)
+    print(searched_word)
     # # n_docs is the total n. of tweets
     # p_t = {}
     # p_t_com = defaultdict(lambda: defaultdict(int))
