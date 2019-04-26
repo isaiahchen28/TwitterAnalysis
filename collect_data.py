@@ -12,7 +12,6 @@ time out and return an error.
 """
 import argparse
 import string
-import tweepy
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler
 from tweepy import Stream
