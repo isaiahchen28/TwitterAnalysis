@@ -104,7 +104,7 @@ if __name__ == '__main__':
     term_count, term_freq = calculate_term_frequencies(term_list, 20)
     com = generate_co_matrix(term_list)
     co_terms = co_occurrent_terms(com, 20)
-    searched_word = search_word_co_occurrences("creepy", term_list, 20)
+    searched_word = search_word_co_occurrences("fucking", term_list, 20)
 
     # n_docs is the total n. of tweets
     p_t = {}
