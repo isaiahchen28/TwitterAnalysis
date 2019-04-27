@@ -10,12 +10,10 @@ Also, a config.py file containing API keys and tokens is needed to access Twitte
 
 ## Data Collection
 Twitter data can be collected using "collect_data.py" and providing the proper arguments are shown below:
-
-'''
-python collect_data.py -q Query -d Data - t hh:mm:ss
-'''
+```
+python collect_data.py -q query -d data -t hh:mm:ss
+```
+where "query" is the keyword of interest, "data" is the directory where the .json files will be saved, and "hh:mm:ss" is the duration of the data collection.
 
 ## Data Analysis
 Put more text here.
-
-## References
