@@ -1,28 +1,50 @@
-"""
-This Python script is used to analyze term frequencies.
-For each tweet in a .json file, there are different attributes:
+'''
+This Python script contains different functions for analyzing data from a
+.json file with Tweets. For each tweet in a .json file, there are several
+different attributes, such as:
     text - the text of the Tweet
     created_at - the date of the creation of the Tweet
     favorite_count - the number of times the Tweet has been favorited
     retweet_count - the number of times the Tweet has been retweeted
     lang - the language that the Tweet is written in
     user - the profile/handle of the Tweet's author
-These function will only use the text information in each tweet.
-"""
+These functions will only utilize the text information in each tweet.
+'''
 import string
 from nltk.corpus import stopwords
 import json
-import pre_process
 from collections import Counter
 from collections import defaultdict
 from operator import itemgetter
-import math
+from math import log2
+from pre_process import preprocess
 
 
 def generate_term_list(filename, term_filter):
-    """
-    Generate list of terms
-    """
+    '''
+    Generate a list of all the terms that appear in a .json file
+
+    **Parameters**
+
+        filename: *str*
+            The name of the .json file to be input.
+        term_filter: *str*
+            The type of filter to be used for parsing through all the words in
+            the Tweets. There are six different filters that can be used:
+                default - considers all of the terms
+                remove_stop_words - does not consider stop-words
+                hashtags - only considers hashtags and no other terms
+                terms_only - does not consider hashtags or mentions
+                single_terms - only counts terms once in a Tweet
+                single_stop_words - only counts terms once and does not
+                                    consider stop-words
+
+    **Returns**
+
+        terms: *list, str*
+            A list with all of the individual terms that appear in the .json
+            file.
+    '''
     # Define list of common characters used for punctuation
     punctuation = list(string.punctuation)
     # Define list of stop-words, which are common words that do not carry
@@ -35,7 +57,7 @@ def generate_term_list(filename, term_filter):
         for line in f:
             tweet = json.loads(line)
             # Pre-process the information in the Tweet
-            ppterms = pre_process.preprocess(tweet['text'])
+            ppterms = preprocess(tweet['text'])
             # Apply the appropriate filter as specified by the user
             if term_filter == "remove_stop_words":
                 terms.append([term for term in ppterms if term not in stop])
@@ -59,9 +81,27 @@ def generate_term_list(filename, term_filter):
 
 
 def calculate_term_frequencies(term_list, n):
-    """
-    Calculate term frequencies
-    """
+    '''
+    Calculates term frequencies and will return the most common terms that
+    appear in all of the Tweets.
+
+    **Parameters**
+
+        term_list: *list, str*
+            A list with all of the individual terms that appear in the .json
+            file.
+        n: *int*
+            The number of terms to return in the list of most common terms.
+
+    **Returns**
+
+        count_all: *collections.Counter*
+            A Counter object that is used to keep count of how many times each
+            term appears in the term list.
+        most_common_terms: *list, tuple*
+            A list of the n most common terms that appear in the term list,
+            along with the number of times each term appears.
+    '''
     count_all = Counter()
     for i in term_list:
         count_all.update(i)
@@ -115,7 +155,7 @@ def define_lexicon(filename):
 
 
 if __name__ == '__main__':
-    filename = "data/stream_brexit.json"
+    filename = "data/stream_trump.json"
     term_filter = "terms_only"
     term_list = generate_term_list(filename, term_filter)
     term_count, term_freq = calculate_term_frequencies(term_list, 20)
@@ -139,7 +179,7 @@ if __name__ == '__main__':
     for t1 in p_t:
         for t2 in com[t1]:
             denom = p_t[t1] * p_t[t2]
-            pmi[t1][t2] = math.log2(p_t_com[t1][t2] / denom)
+            pmi[t1][t2] = log2(p_t_com[t1][t2] / denom)
 
     semantic_orientation = {}
     for term, n in p_t.items():
