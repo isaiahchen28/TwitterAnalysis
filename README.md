@@ -1,8 +1,5 @@
 # TwitterAnalysis
-Requires Python 3.7 to run
-
-This project uses data mining and machine learning methods to obtain
-meaningful conclusions regarding social media sentiment on Twitter.
+This project uses data mining and machine learning methods to collect and analyze data that is posted on Twitter.
 
 # Required Modules
 Tweepy - https://www.tweepy.org
