@@ -1,4 +1,4 @@
-"""
+'''
 This Python script is used to access Twitter and contains some basic functions
 for collecting data. To properly run this script, enter the following command
 in the terminal:
@@ -9,20 +9,20 @@ where QUERY is the query of interest, data is the directory where the json
 file will be saved to, and time is the time that the stream will run for. If
 the query does not appear in enough tweets after 5 seconds, the stream will
 time out and return an error.
-"""
+'''
 import argparse
 import string
-from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler
 from tweepy import Stream
+from tweepy.streaming import StreamListener
 import time
 import config
 
 
 def get_parser():
-    """
+    '''
     Get the parser for any arguments in the command line.
-    """
+    '''
     parser = argparse.ArgumentParser(description="Download Tweets")
     # Add argument for the query
     parser.add_argument("-q", "--query", dest="query",
@@ -36,18 +36,18 @@ def get_parser():
 
 
 def get_sec(time_str):
-    """
+    '''
     Converts time string (hh:mm:ss) into seconds.
-    """
+    '''
     h, m, s = time_str.split(':')
     return float(int(h) * 3600 + int(m) * 60 + int(s))
 
 
 def convert_valid(char):
-    """
+    '''
     Converts a character into an appropriate one for use in filenames. If a
     character is invalid, it will be replaced with a '_' character.
-    """
+    '''
     # Define string with all valid characters for filenames
     valid_chars = "-_.%s%s" % (string.ascii_letters, string.digits)
     # Check if the character is valid or not and replace the invalid character
@@ -58,16 +58,16 @@ def convert_valid(char):
 
 
 def format_filename(filename):
-    """
+    '''
     Converts the filename into a string with suitable characters. It takes in
     the name of the file to be converted and will return the appropriate
     string.
-    """
+    '''
     return ''.join(convert_valid(char) for char in filename)
 
 
 class MyListener(StreamListener):
-    """
+    '''
     StreamListener object that is used to stream data from Twitter.
 
     **Parameters**
@@ -78,7 +78,7 @@ class MyListener(StreamListener):
             The keyword of interest.
         time_limit: *int*
             The time limit for the stream to run
-    """
+    '''
 
     def __init__(self, data_dir, query, time_limit):
         # Make sure the filename is formatted properly
@@ -88,10 +88,10 @@ class MyListener(StreamListener):
         self.time_limit = time_limit
 
     def on_data(self, data):
-        """
+        '''
         Write an individual Tweet to the output file. The data input is
         encoded as a unicode type.
-        """
+        '''
         # Check if the time limit has been reached
         if (time.time() - self.start_time) < self.time_limit:
             try:
@@ -110,9 +110,9 @@ class MyListener(StreamListener):
             return False
 
     def on_error(self, status):
-        """
+        '''
         Print the error status in case an error occurs.
-        """
+        '''
         print(status)
         return True
 
