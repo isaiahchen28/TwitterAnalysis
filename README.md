@@ -6,10 +6,10 @@ Python 3.7 is required, as well as a couple of external modules that can be easi
 1. [Tweepy](https://www.tweepy.org) is used for accessing Twitter's Streaming API for data collection.
 2. [Natural Language Toolkit](https://www.nltk.org) is used for processing language data.
 
-Also, a config.py file containing API keys and tokens is needed to access Twitter's streaming API. These keys can be provided by the author of the program or any user can [create a Twitter Developer account and create an app](https://developer.twitter.com/en.html).
+Also, a config.py file containing API keys and tokens is needed to access Twitter's streaming API. These keys can be provided by the author of the program or any user can [create a Twitter Developer account and use an app to generate API keys and tokens](https://developer.twitter.com/en.html).
 
 ## Data Collection
-Hey its an example of code:
+Twitter data can be collected using "collect_data.py" and providing the proper arguments are shown below:
 
 '''
 python collect_data.py -q Query -d Data - t hh:mm:ss
