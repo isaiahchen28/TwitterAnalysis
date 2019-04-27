@@ -9,6 +9,7 @@ Also, a
 
 ## Data Collection
 Hey its an example of code:
+
 '''
 python collect_data.py -q Query -d Data - t hh:mm:ss
 '''
