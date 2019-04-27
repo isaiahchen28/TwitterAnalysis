@@ -1,14 +1,14 @@
-"""
+'''
 This Python script contains functions that are used to pre-process Twitter
 data.
-"""
+'''
 import re
 
 
 def tokenize(s):
-    """
+    '''
     Split a string of text into individual tokens.
-    """
+    '''
     # Define string of various emoticons to be recognized as tokens
     emoticons_str = r"""
     (?:
@@ -36,7 +36,7 @@ def tokenize(s):
 
 
 def preprocess(s, lowercase=True):
-    """
+    '''
     Call the tokenize function above and also handle emoticons properly.
 
     **Parameters**
@@ -52,7 +52,7 @@ def preprocess(s, lowercase=True):
 
         tokens: *list, str*
             The individual string tokens from the original Tweet.
-    """
+    '''
     # Define string of various emoticons to be recognized as tokens
     emoticons_str = r"""
     (?:
@@ -65,7 +65,7 @@ def preprocess(s, lowercase=True):
     emoticon_re = re.compile(r'^'+emoticons_str+'$',
                              re.VERBOSE | re.IGNORECASE)
     # Call the tokenize function and convert characters to lowercase if the
-    # flag is True
+    # flag is set to be True
     tokens = tokenize(s)
     if lowercase:
         tokens = [token if emoticon_re.search(

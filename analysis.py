@@ -1,5 +1,13 @@
 """
 This Python script is used to analyze term frequencies.
+For each tweet in a .json file, there are different attributes:
+    text - the text of the Tweet
+    created_at - the date of the creation of the Tweet
+    favorite_count - the number of times the Tweet has been favorited
+    retweet_count - the number of times the Tweet has been retweeted
+    lang - the language that the Tweet is written in
+    user - the profile/handle of the Tweet's author
+These function will only use the text information in each tweet.
 """
 import string
 from nltk.corpus import stopwords
