@@ -131,7 +131,7 @@ def main():
     auth.set_access_token(access_token, access_secret)
     # Stream Twitter data using StreamListener object
     twitter_stream = Stream(auth, MyListener(
-        args.data_dir, args.query, get_sec(args.time_limit)), timeout=5)
+        args.data_dir, args.query, get_sec(args.time_limit)), timeout=10)
     twitter_stream.filter(track=[args.query])
 
 

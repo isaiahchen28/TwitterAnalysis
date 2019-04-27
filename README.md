@@ -19,7 +19,7 @@ The first step is to collect data from Twitter in real time. Twitter's streaming
 ```
 python collect_data.py -q query -d data -t hh:mm:ss
 ```
-where ```query``` is the keyword of interest, ```data``` is the name of the directory where the .json file will be saved, and ```hh:mm:ss``` is the time duration of the data collection. The query must be either a single word or multiple words within quotation marks. If you enter a query and there are no Tweets containing your query, the program will timeout after 5 seconds of inactivity. Also, the config.py file containing acceptable API keys and tokens must be in the same directory as the collect_data.py file.
+where ```query``` is the keyword of interest, ```data``` is the name of the directory where the .json file will be saved, and ```hh:mm:ss``` is the time duration of the data collection. The query must be either a single word or multiple words within quotation marks. When streaming, the program will timeout after 10 seconds of inactivity if there are no more Tweets containing your query. Also, the config.py file containing acceptable API keys and tokens must be in the same directory as the collect_data.py file.
 
 ## Data Analysis
 The analysis.py file contains several functions that are used to analyze the collected data.
