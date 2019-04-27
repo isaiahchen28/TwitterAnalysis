@@ -24,5 +24,4 @@ where ```query``` is the keyword of interest, ```data``` is the name of the dire
 ## Data Analysis
 The analysis.py file contains several functions that are used to analyze the collected data:
 
-**Calculate Term Frequencies**
-	This function will return the most commonly used terms that appear in the data.
+**Calculate Term Frequencies:** This function will return the most commonly used terms that appear in the data, along with the number of times each term appears.
