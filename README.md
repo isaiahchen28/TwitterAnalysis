@@ -8,5 +8,5 @@ meaningful conclusions regarding social media sentiment on Twitter.
 Tweepy - https://www.tweepy.org
 Natural Language Toolkit (NLTK) - https://www.nltk.org
 
-# Instructions
+# Features
 1. Collect data from Twitter using the Twitter Streaming API.

@@ -97,6 +97,15 @@ def search_word_co_occurrences(keyword, term_list, n):
     return count_search.most_common(n)
 
 
+def define_lexicon(filename):
+    raw_string_of_file = open(filename, encoding="ISO-8859-1")
+    words = []
+    for line in raw_string_of_file:
+        temp = line.splitlines()[0]
+        words.append(temp)
+    return words
+
+
 if __name__ == '__main__':
     filename = "data/stream_brexit.json"
     term_filter = "terms_only"
@@ -115,16 +124,9 @@ if __name__ == '__main__':
         for t2 in com[term]:
             p_t_com[term][t2] = com[term][t2] / n_docs
 
-    positive_vocab = [
-        'good', 'nice', 'great', 'awesome', 'outstanding',
-        'fantastic', 'terrific', ':)', ':-)', 'like', 'love',
-        # shall we also include game-specific terms?
-        # 'triumph', 'triumphal', 'triumphant', 'victory', etc.
-    ]
-    negative_vocab = [
-        'bad', 'terrible', 'crap', 'useless', 'hate', ':(', ':-(',
-        # 'defeat', etc.
-    ]
+    positive_vocab = define_lexicon("positive_words.txt")
+    negative_vocab = define_lexicon("negative_words.txt")
+
     pmi = defaultdict(lambda: defaultdict(int))
     for t1 in p_t:
         for t2 in com[t1]:
