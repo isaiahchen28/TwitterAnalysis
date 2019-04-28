@@ -22,6 +22,12 @@ python collect_data.py -q query -d data -t hh:mm:ss
 where ```query``` is the keyword of interest, ```data``` is the name of the directory where the .json file will be saved, and ```hh:mm:ss``` is the time duration of the data collection. The query must be either a single word or multiple words within quotation marks. When streaming, the program will timeout after 10 seconds of inactivity if there are no more Tweets containing your query. Also, the config.py file containing acceptable API keys and tokens must be in the same directory as the collect_data.py file.
 
 ## Data Analysis
-The analysis.py file contains several functions that are used to analyze the collected data:
+The analysis.py file contains several functions that are used to analyze the collected data. The important ones are listed below:
 
 **Calculate Term Frequencies:** This function will return the most commonly used terms that appear in the data, along with the number of times each term appears.
+
+**Calculate Term Co-Occurrences:** This function will return the most commonly used pairs of terms that appear in the same Tweets. This gives us a better idea of the context in which certain terms appear.
+
+**Search Word Co-Occurrences:** Given a user-specified keyword, this function will return the terms that appear the most frequently in the same Tweets with the keyword. If we have a specific term or keyword and we want to see which other terms appear alongside it, this function is usefl in this regard.
+
+**Sentiment Analysis:** This function performs sentiment analysis using Semantic Orientation (SO) and Pointwise Mutual Information (PMI) as the relevant metrics. The semantic orientation of a word is defined as the difference between its associations with other positive and negative words. The PMI is an indicator of how associated two terms are. The relevant equations for calculating both of these metrics can be found in Peter D. Turney's paper, which is linked above. This function also implements compiled lexicons of positive and negative words that are stored in two appropriately named text files. These lexicons have been compiled by [Minqing Hu and Bing Liu](https://www.cs.uic.edu/~liub/FBS/sentiment-analysis.html#lexicon).

@@ -203,7 +203,7 @@ def define_lexicon(filename):
     return words
 
 
-def sentiment_analysis(term_list, term_counts, com, positive_vocab, negative_vocab):
+def sentiment_analysis(term_list, term_counts, com, positive_vocab, negative_vocab, num):
     '''
     Perform sentiment anlysis for a given data set of Tweets.
 
@@ -221,51 +221,69 @@ def sentiment_analysis(term_list, term_counts, com, positive_vocab, negative_voc
             The lexicon of words that have a positive connotation.
         negative_vocab: *list, str*
             The lexicon of words that have a negative connotation.
+        num: *int*
+            The number of words to be returned in the top_pos and top_neg lists.
 
     **Returns**
 
-
+        semantic_sorted: *list, tuple*
+            The sorted list of semantic orientations for all of the terms in
+            the term list.
+        top_pos: *list, tuple*
+            The terms with the highest semantic orienations.
+        top_neg: *list, tuple*
+            The terms with the lowest semantic orientations.
     '''
-    p_t = {}
-    p_t_com = defaultdict(lambda: defaultdict(int))
-    n_docs = len(term_list)
-    for term, n in term_counts.items():
-        p_t[term] = n / n_docs
-        for t2 in com[term]:
-            p_t_com[term][t2] = com[term][t2] / n_docs
-    pmi = defaultdict(lambda: defaultdict(int))
-    for t1 in p_t:
+    # Calculate the probability of observing term t1 and the probability of
+    # observing t1 and t2 together in the same Tweet
+    pt = {}
+    ptcom = defaultdict(lambda: defaultdict(int))
+    ntweets = len(term_list)
+    for t1, n in term_counts.items():
+        pt[t1] = n / ntweets
         for t2 in com[t1]:
-            denom = p_t[t1] * p_t[t2]
-            pmi[t1][t2] = log2(p_t_com[t1][t2] / denom)
+            ptcom[t1][t2] = com[t1][t2] / ntweets
+    # Calculate the PMI for each pair of terms
+    pmi = defaultdict(lambda: defaultdict(int))
+    for t1 in pt:
+        for t2 in com[t1]:
+            pmi[t1][t2] = log2(ptcom[t1][t2] / (pt[t1] * pt[t2]))
+    # Calculate the semantic orientation for every term
     semantic_orientation = {}
-    for term, n in p_t.items():
+    for term, n in pt.items():
         positive_assoc = sum(pmi[term][tx] for tx in positive_vocab)
         negative_assoc = sum(pmi[term][tx] for tx in negative_vocab)
         semantic_orientation[term] = positive_assoc - negative_assoc
+    # Sort the list of semantic orientations
     semantic_sorted = sorted(semantic_orientation.items(),
                              key=itemgetter(1),
                              reverse=True)
-    top_pos = semantic_sorted[:10]
-    top_neg = semantic_sorted[-10:]
+    # Define the ten most positive and negative terms that appear in all of
+    # the Tweets
+    top_pos = semantic_sorted[:num]
+    top_neg = semantic_sorted[-num:]
     return semantic_sorted, top_pos, top_neg
 
 
 def main():
+    # Input the filename
     filename = "data/stream_trump.json"
+    # Specify the term filter to be used
     term_filter = "terms_only"
+    # Specify the number of terms to be returned from the functions
     n = 10
+    # Define the lexicons to be used for sentiment analysis
+    positive_vocab = define_lexicon("positive_words.txt")
+    negative_vocab = define_lexicon("negative_words.txt")
+    # Call upon the functions to perform sentiment analysis
     term_list = generate_term_list(filename, term_filter)
     term_count, term_freq = calculate_term_frequencies(term_list, n)
     com = generate_co_matrix(term_list)
     co_terms = co_occurrent_terms(com, n)
-    searched_word = search_word_co_occurrences("fucking", term_list, n)
-    positive_vocab = define_lexicon("positive_words.txt")
-    negative_vocab = define_lexicon("negative_words.txt")
-    top_pos, top_neg = sentiment_analysis(
-        term_list, term_count, com, positive_vocab, negative_vocab)
-    print(top_pos)
-    print(top_neg)
+    searched_word = search_word_co_occurrences("example", term_list, n)
+    so, top_pos, top_neg = sentiment_analysis(
+        term_list, term_count, com, positive_vocab, negative_vocab, n)
+
 
 if __name__ == '__main__':
     main()
