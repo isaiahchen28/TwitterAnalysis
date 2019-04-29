@@ -278,7 +278,7 @@ def main():
     positive_vocab = define_lexicon("positive_words.txt")
     negative_vocab = define_lexicon("negative_words.txt")
     # Word to be searched
-    search_word = "collusion"
+    search_word = "sansa"
     # Call upon the functions to perform sentiment analysis
     term_list = generate_term_list(filename, term_filter)
     term_count, term_freq = calculate_term_frequencies(term_list, n)
@@ -294,7 +294,7 @@ def main():
     print("\nMost frequent co-occurrent terms:")
     for i in co_terms:
         print(i)
-    print("\nFor the word: %s, the most frequent co-occurrent terms are:" % search_word)
+    print("\nFor the word %s, the most frequent co-occurrent terms are:" % search_word)
     for i in searched_word:
         print(i)
     print("\nThe most positive terms:")
