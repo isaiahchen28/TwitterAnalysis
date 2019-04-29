@@ -49,7 +49,9 @@ def generate_term_list(filename, term_filter):
     punctuation = list(string.punctuation)
     # Define list of stop-words, which are common words that do not carry
     # significance (conjunctions, adverbs, etc.)
-    stop = stopwords.words('english') + punctuation + ["rt", "via"]
+    stop = stopwords.words('english') + punctuation + \
+        ["rt", "via", "…", "’", "“", "”", "‘", "1",
+            "2", "3", "4", "5", "6", "7", "8", "9", "0"]
     terms = []
     # Open the file
     with open(filename, 'r') as f:
@@ -267,7 +269,7 @@ def sentiment_analysis(term_list, term_counts, com, positive_vocab, negative_voc
 
 def main():
     # Input the filename
-    filename = "data/stream_trump.json"
+    filename = "data/stream_game_of_thrones.json"
     # Specify the term filter to be used
     term_filter = "terms_only"
     # Specify the number of terms to be returned from the functions
@@ -275,14 +277,32 @@ def main():
     # Define the lexicons to be used for sentiment analysis
     positive_vocab = define_lexicon("positive_words.txt")
     negative_vocab = define_lexicon("negative_words.txt")
+    # Word to be searched
+    search_word = "collusion"
     # Call upon the functions to perform sentiment analysis
     term_list = generate_term_list(filename, term_filter)
     term_count, term_freq = calculate_term_frequencies(term_list, n)
     com = generate_co_matrix(term_list)
     co_terms = co_occurrent_terms(com, n)
-    searched_word = search_word_co_occurrences("example", term_list, n)
+    searched_word = search_word_co_occurrences(search_word, term_list, n)
     so, top_pos, top_neg = sentiment_analysis(
         term_list, term_count, com, positive_vocab, negative_vocab, n)
+    # Print results
+    print("Most frequent terms:")
+    for i in term_freq:
+        print(i)
+    print("\nMost frequent co-occurrent terms:")
+    for i in co_terms:
+        print(i)
+    print("\nFor the word: %s, the most frequent co-occurrent terms are:" % search_word)
+    for i in searched_word:
+        print(i)
+    print("\nThe most positive terms:")
+    for i in top_pos:
+        print(i)
+    print("\nThe most negative terms:")
+    for i in top_neg:
+        print(i)
 
 
 if __name__ == '__main__':
