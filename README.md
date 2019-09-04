@@ -33,3 +33,6 @@ The analysis.py file contains several functions that are used to analyze the col
 **Sentiment Analysis:** This function performs sentiment analysis using Semantic Orientation (SO) and Pointwise Mutual Information (PMI) as the relevant metrics. The semantic orientation of a word is defined as the difference between its associations with other positive and negative words. The PMI is an indicator of how associated two terms are. The relevant equations for calculating both of these metrics can be found in Peter D. Turney's paper, which is linked above. This function also makes use of compiled lexicons of positive and negative words that are stored in two appropriately named text files. These lexicons have been compiled by [Minqing Hu and Bing Liu](https://www.cs.uic.edu/~liub/FBS/sentiment-analysis.html#lexicon).
 
 The main function in the analysis.py file can be easily changed to run the appropriate functions. Simply run the python file in the terminal to perform the analysis. Line 272 must have the correct filename for the .json file, line 274 must have the desired term filter (the different filters are described in lines 34-40), and the desired search word can be input on line 281.
+
+## Work in Progress
+This code is being continuously improved to add more functionalities. Please contact Isaiah Chen (email: ichen23@jhu.edu) with any questions or concerns.
