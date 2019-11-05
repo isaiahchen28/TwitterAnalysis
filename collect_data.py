@@ -39,7 +39,10 @@ def get_sec(time_str):
     '''
     Converts time string (hh:mm:ss) into seconds.
     '''
-    h, m, s = time_str.split(':')
+    try:
+        h, m, s = time_str.split(':')
+    except AttributeError:
+        h, m, s = 0, 10, 0
     return float(int(h) * 3600 + int(m) * 60 + int(s))
 
 
@@ -121,6 +124,9 @@ def main():
     # Define parser and retrieve the input arguments
     parser = get_parser()
     args = parser.parse_args()
+    if args.query is None:
+        print("Please input all required flags!")
+        raise Exception("Exiting code")
     # Retrieve API keys and tokens
     consumer_key = config.consumer_key
     consumer_secret = config.consumer_secret

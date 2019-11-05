@@ -30,7 +30,7 @@ def tokenize(s):
         r"(?:\S)"]
     # Use Verbose and Ignorecase flags to ignore spaces in original strings
     # and read both lowercase and uppercase characters
-    tokens_re = re.compile(r'('+'|'.join(regex_str)+')',
+    tokens_re = re.compile(r'(' + '|'.join(regex_str) + ')',
                            re.VERBOSE | re.IGNORECASE)
     return tokens_re.findall(s)
 
@@ -62,7 +62,7 @@ def preprocess(s, lowercase=True):
     )"""
     # Use Verbose and Ignorecase flags to ignore spaces in original strings
     # and read both lowercase and uppercase characters in the emoticons
-    emoticon_re = re.compile(r'^'+emoticons_str+'$',
+    emoticon_re = re.compile(r'^' + emoticons_str + '$',
                              re.VERBOSE | re.IGNORECASE)
     # Call the tokenize function and convert characters to lowercase if the
     # flag is set to be True

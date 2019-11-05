@@ -35,4 +35,10 @@ The analysis.py file contains several functions that are used to analyze the col
 The main function in the analysis.py file can be easily changed to run the appropriate functions. Simply run the python file in the terminal to perform the analysis. Line 272 must have the correct filename for the .json file, line 274 must have the desired term filter (the different filters are described in lines 34-40), and the desired search word can be input on line 281.
 
 ## Work in Progress
-This code is being continuously improved to add more functionalities. Please contact Isaiah Chen (email: ichen23@jhu.edu) with any questions or concerns.
+This code is being continuously improved to add more functionalities. The following functionalities are being implemented:
+* Error handling for incorrect user input for collecting data.
+* Add defaults for data directory and default collection time.
+* Implement historical search.
+* Improve term frequency results.
+* Return frequencies for links to external articles/webpages.
+Please contact Isaiah Chen (email: ichen23@jhu.edu) with any questions or concerns.

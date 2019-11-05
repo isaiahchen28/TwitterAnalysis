@@ -224,7 +224,8 @@ def sentiment_analysis(term_list, term_counts, com, positive_vocab, negative_voc
         negative_vocab: *list, str*
             The lexicon of words that have a negative connotation.
         num: *int*
-            The number of words to be returned in the top_pos and top_neg lists.
+            The number of words to be returned in the top_pos and top_neg
+            lists.
 
     **Returns**
 
@@ -275,8 +276,8 @@ def main():
     # Specify the number of terms to be returned from the functions
     n = 10
     # Define the lexicons to be used for sentiment analysis
-    positive_vocab = define_lexicon("positive_words.txt")
-    negative_vocab = define_lexicon("negative_words.txt")
+    positive_vocab = define_lexicon("term_database/positive_words.txt")
+    negative_vocab = define_lexicon("term_database/negative_words.txt")
     # Word to be searched
     search_word = "sansa"
     # Call upon the functions to perform sentiment analysis
