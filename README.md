@@ -41,4 +41,5 @@ This code is being continuously improved to add more functionalities. The follow
 * Implement historical search.
 * Improve term frequency results.
 * Return frequencies for links to external articles/webpages.
+
 Please contact Isaiah Chen (email: ichen23@jhu.edu) with any questions or concerns.
