@@ -17,6 +17,8 @@ from collections import Counter
 from collections import defaultdict
 from operator import itemgetter
 from math import log2
+import os
+import sys
 from pre_process import preprocess
 
 
@@ -54,12 +56,16 @@ def generate_term_list(filename, term_filter):
             "2", "3", "4", "5", "6", "7", "8", "9", "0"]
     terms = []
     # Open the file
-    with open(filename, 'r') as f:
+    with open(filename, 'rb') as f:
         # Parse through each line/Tweet in the .json file
         for line in f:
             tweet = json.loads(line)
             # Pre-process the information in the Tweet
-            ppterms = preprocess(tweet['text'])
+            try:
+                ppterms = preprocess(tweet["text"])
+            except KeyError:
+                continue
+            # raise Exception("DEBUG")
             # Apply the appropriate filter as specified by the user
             if term_filter == "remove_stop_words":
                 terms.append([term for term in ppterms if term not in stop])
@@ -205,7 +211,8 @@ def define_lexicon(filename):
     return words
 
 
-def sentiment_analysis(term_list, term_counts, com, positive_vocab, negative_vocab, num):
+def sentiment_analysis(term_list, term_counts, com, positive_vocab,
+                       negative_vocab, num):
     '''
     Perform sentiment anlysis for a given data set of Tweets.
 
@@ -270,7 +277,22 @@ def sentiment_analysis(term_list, term_counts, com, positive_vocab, negative_voc
 
 def main():
     # Input the filename
-    filename = "data/stream_game_of_thrones.json"
+    filename = input("Please input the filename of the data to be analyzed: ")
+    directory = "data"
+    files = os.listdir(directory)
+    while True:
+        # Check that the file exists
+        if ".json" not in filename:
+            filename = filename + ".json"
+        if filename in files:
+            print("Data found. ")
+            break
+        else:
+            filename = input(
+                "Data file not found. Please input proper filename or type QUIT to exit. ")
+        if filename == "QUIT":
+            sys.exit()
+    filename = directory + "/" + filename
     # Specify the term filter to be used
     term_filter = "terms_only"
     # Specify the number of terms to be returned from the functions
@@ -279,13 +301,26 @@ def main():
     positive_vocab = define_lexicon("term_database/positive_words.txt")
     negative_vocab = define_lexicon("term_database/negative_words.txt")
     # Word to be searched
-    search_word = "sansa"
+    search_word_ans = input(
+        "Do you want to calculate co-occurrences for another search word? (y/n) ")
+    while True:
+        if search_word_ans == "y":
+            SEARCH_WORD = True
+            search_word = input(
+                "Please input the word to be searched for along side the original query: ")
+            break
+        elif search_word_ans == "n":
+            SEARCH_WORD = False
+            break
+        else:
+            search_word_ans = input("Please enter y/n ")
     # Call upon the functions to perform sentiment analysis
     term_list = generate_term_list(filename, term_filter)
     term_count, term_freq = calculate_term_frequencies(term_list, n)
     com = generate_co_matrix(term_list)
     co_terms = co_occurrent_terms(com, n)
-    searched_word = search_word_co_occurrences(search_word, term_list, n)
+    if SEARCH_WORD:
+        searched_word = search_word_co_occurrences(search_word, term_list, n)
     so, top_pos, top_neg = sentiment_analysis(
         term_list, term_count, com, positive_vocab, negative_vocab, n)
     # Print results
@@ -295,9 +330,10 @@ def main():
     print("\nMost frequent co-occurrent terms:")
     for i in co_terms:
         print(i)
-    print("\nFor the word %s, the most frequent co-occurrent terms are:" % search_word)
-    for i in searched_word:
-        print(i)
+    if SEARCH_WORD:
+        print("\nFor the word %s, the most frequent co-occurrent terms are:" % search_word)
+        for i in searched_word:
+            print(i)
     print("\nThe most positive terms:")
     for i in top_pos:
         print(i)

@@ -124,9 +124,6 @@ def main():
     # Define parser and retrieve the input arguments
     parser = get_parser()
     args = parser.parse_args()
-    if args.query is None:
-        print("Please input all required flags!")
-        raise Exception("Exiting code")
     # Retrieve API keys and tokens
     consumer_key = config.consumer_key
     consumer_secret = config.consumer_secret
