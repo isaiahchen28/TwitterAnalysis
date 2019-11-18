@@ -19,6 +19,7 @@ from operator import itemgetter
 from math import log2
 import os
 import sys
+import numpy as np
 from pre_process import preprocess
 
 
@@ -46,6 +47,8 @@ def generate_term_list(filename, term_filter):
         terms: *list, str*
             A list with all of the individual terms that appear in the .json
             file.
+        count: *int*
+            The number of lines in the .json file.
     '''
     # Define list of common characters used for punctuation
     punctuation = list(string.punctuation)
@@ -56,9 +59,11 @@ def generate_term_list(filename, term_filter):
             "2", "3", "4", "5", "6", "7", "8", "9", "0"]
     terms = []
     # Open the file
+    count = 0
     with open(filename, 'rb') as f:
         # Parse through each line/Tweet in the .json file
         for line in f:
+            count += 1
             tweet = json.loads(line)
             # Pre-process the information in the Tweet
             try:
@@ -85,7 +90,7 @@ def generate_term_list(filename, term_filter):
                 terms.append([term for term in ppterms])
             else:
                 raise Exception("Invalid filter type.")
-    return terms
+    return terms, count
 
 
 def calculate_term_frequencies(term_list, n):
@@ -315,7 +320,7 @@ def main():
         else:
             search_word_ans = input("Please enter y/n ")
     # Call upon the functions to perform sentiment analysis
-    term_list = generate_term_list(filename, term_filter)
+    term_list, num_tweets = generate_term_list(filename, term_filter)
     term_count, term_freq = calculate_term_frequencies(term_list, n)
     com = generate_co_matrix(term_list)
     co_terms = co_occurrent_terms(com, n)
@@ -340,6 +345,12 @@ def main():
     print("\nThe most negative terms:")
     for i in top_neg:
         print(i)
+    # Compute average semantic orientation
+    orientations = []
+    for i in so:
+        orientations.append(i[1])
+    print("For a collection of " + str(num_tweets) +
+          " tweets, the average semantic orientation is " + str(np.mean(orientations)))
 
 
 if __name__ == '__main__':

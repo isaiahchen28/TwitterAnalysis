@@ -1,0 +1,62 @@
+Query: trump
+
+Most frequent terms:
+('trump', 9406)
+('president', 2188)
+('house', 1720)
+('mueller', 1256)
+('impeachment', 1144)
+('lied', 1125)
+('investigating', 950)
+('whether', 935)
+('testify', 905)
+('americans', 879)
+
+Most frequent co-occurrent terms:
+(('president', 'trump'), 1548)
+(('house', 'trump'), 1321)
+(('mueller', 'trump'), 1189)
+(('lied', 'trump'), 1090)
+(('🇸', '🇺'), 1033)
+(('house', 'lied'), 1012)
+(('lied', 'mueller'), 1006)
+(('house', 'mueller'), 1004)
+(('trump', 'whether'), 917)
+(('house', 'whether'), 861)
+
+For the word impeachment, the most frequent co-occurrent terms are:
+('impeachment', 1144)
+('trump', 738)
+('inquiry', 350)
+('testifying', 248)
+('consider', 201)
+('strongly', 197)
+('testify', 191)
+('says', 190)
+('hearings', 184)
+('new', 147)
+
+The most positive terms:
+('friend', 67.43962134241163)
+('kent', 64.04812092560105)
+('actor', 46.538041752465006)
+('https://t.co/w8k4zfq0pw', 43.30910731499411)
+('arts', 42.13431279619034)
+('award', 41.77479762214493)
+('articulated', 41.56064608199007)
+('foll', 39.23816023237659)
+('failure', 37.237718935833094)
+('compassionate', 37.168635387189696)
+
+The most negative terms:
+('around', -100.00830165102411)
+('claims', -100.90243154323738)
+('america', -101.23923481011848)
+('democrats', -106.77496481966503)
+('attack', -109.95149205961937)
+('case', -110.79295949865978)
+('even', -111.09384799298937)
+('corrupt', -115.05779228151276)
+('another', -150.58772903971325)
+('amp', -155.5169220813054)
+For a collection of 16406 tweets, the average semantic orientation is -2.4232244921272126
