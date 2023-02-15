@@ -1,4 +1,7 @@
 # TwitterAnalysis
+
+NOTE: This code is out of date and does not work as of 2023, due to changes in Twitter's API.
+
 This project focuses on using data mining and machine learning methods to collect and analyze Tweets that are posted on Twitter. This program uses Twitter's streaming API to collect Tweets that are posted in real time for a desired keyword or query. With the collected data, the program can return term frequencies, term co-occurrences, and perform basic sentiment analysis. The framework for this program is based on [example code](https://marcobonzanini.com/2015/03/02/mining-twitter-data-with-python-part-1/) written by [Marco Bonzanini](https://github.com/bonzanini) and the methodology for sentiment analysis is taken from [Peter D. Turney's paper](https://www.aclweb.org/anthology/P02-1053.pdf) on unsupervised classification based on semantic orientation.
 
 ## Setup and Required Modules
@@ -33,13 +36,3 @@ The analysis.py file contains several functions that are used to analyze the col
 **Sentiment Analysis:** This function performs sentiment analysis using Semantic Orientation (SO) and Pointwise Mutual Information (PMI) as the relevant metrics. The semantic orientation of a word is defined as the difference between its associations with other positive and negative words. The PMI is an indicator of how associated two terms are. The relevant equations for calculating both of these metrics can be found in Peter D. Turney's paper, which is linked above. This function also makes use of compiled lexicons of positive and negative words that are stored in two appropriately named text files. These lexicons have been compiled by [Minqing Hu and Bing Liu](https://www.cs.uic.edu/~liub/FBS/sentiment-analysis.html#lexicon).
 
 The main function in the analysis.py file can be easily changed to run the appropriate functions. Simply run the python file in the terminal to perform the analysis. Line 302 must have the desired term filter (the different filters are described in lines 34-43).
-
-## Work in Progress
-This code is being continuously improved to add more functionalities. The following functionalities are being implemented:
-* Error handling for incorrect user input for collecting data.
-* Add defaults for data directory and default collection time.
-* Implement historical search.
-* Improve term frequency results.
-* Return frequencies for links to external articles/webpages.
-
-Please contact Isaiah Chen (email: ichen23@jhu.edu) with any questions or concerns.
